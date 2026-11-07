@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sách Tư Duy Phản Biện - Critical Thinking</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Tối ưu hóa hiển thị và cuộn trang trên điện thoại */
+    @media (max-width: 768px) {
+        body {
+            font-size: 14px;
+        }
+        /* Thu nhỏ kích thước tiêu đề chính trên màn hình nhỏ */
+        h1 {
+            font-size: 1.5rem !important;
+        }
+        h2 {
+            font-size: 1.25rem !important;
+        }
+        /* Giảm lề các card nội dung cho đỡ tràn màn hình */
+        .max-w-6xl, .max-w-4xl, .max-w-5xl {
+            padding-left: 12px;
+            padding-right: 12px;
+        }
+    }
+
+    /* Đảm bảo iframe video tự động co giãn theo chiều rộng màn hình điện thoại */
+    .aspect-video iframe {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo / Title -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-md">
+                        <i class="fa-solid fa-brain text-xl"></i>
+                    </div>
+                    <span class="font-bold text-lg text-slate-900 tracking-tight">Tư Duy Phản Biện</span>
+                </div>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden xl:flex space-x-1">
+                    <button onclick="switchTab('gioi-thieu')" id="nav-gioi-thieu" class="tab-btn px-3 py-2 rounded-lg font-medium text-xs transition-all duration-200 text-blue-600 bg-blue-50">
+                        <i class="fa-solid fa-circle-info mr-1"></i>Giới thiệu
+                    </button>
+                    <button onclick="switchTab('trinh-bay')" id="nav-trinh-bay" class="tab-btn px-3 py-2 rounded-lg font-medium text-xs transition-all duration-200 text-slate-600 hover:text-blue-600 hover:bg-slate-100">
+                        <i class="fa-solid fa-book-open mr-1"></i>Trình bày
+                    </button>
+                    <button onclick="switchTab('video')" id="nav-video" class="tab-btn px-3 py-2 rounded-lg font-medium text-xs transition-all duration-200 text-slate-600 hover:text-blue-600 hover:bg-slate-100">
+                        <i class="fa-solid fa-play-circle mr-1"></i>Video
+                    </button>
+                    <button onclick="switchTab('cau-hoi')" id="nav-cau-hoi" class="tab-btn px-3 py-2 rounded-lg font-medium text-xs transition-all duration-200 text-slate-600 hover:text-blue-600 hover:bg-slate-100">
+                        <i class="fa-solid fa-lightbulb mr-1"></i>Bài học
+                    </button>
+                    <button onclick="switchTab('cau-3')" id="nav-cau-3" class="tab-btn px-3 py-2 rounded-lg font-medium text-xs transition-all duration-200 text-slate-600 hover:text-blue-600 hover:bg-slate-100">
+                        <i class="fa-solid fa-comment-dots mr-1"></i>Ấn tượng
+                    </button>
+                    <button onclick="switchTab('cau-4')" id="nav-cau-4" class="tab-btn px-3 py-2 rounded-lg font-medium text-xs transition-all duration-200 text-slate-600 hover:text-blue-600 hover:bg-slate-100">
+                        <i class="fa-solid fa-laptop-code mr-1"></i>Liên hệ sinh viên CNTT
+                    </button>
+                    <button onclick="switchTab('cau-5')" id="nav-cau-5" class="tab-btn px-3 py-2 rounded-lg font-medium text-xs transition-all duration-200 text-slate-600 hover:text-blue-600 hover:bg-slate-100">
+                        <i class="fa-solid fa-bullhorn mr-1"></i>Thông điệp
+                    </button>
+                    <button onclick="switchTab('thanh-vien')" id="nav-thanh-vien" class="tab-btn px-3 py-2 rounded-lg font-medium text-xs transition-all duration-200 text-slate-600 hover:text-blue-600 hover:bg-slate-100">
+                        <i class="fa-solid fa-users mr-1"></i>Thành viên
+                    </button>
+                </nav>
+
+                <!-- Mobile menu button -->
+                <div class="xl:hidden">
+                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 focus:outline-none">
+                        <i class="fa-solid fa-bars text-xl" id="menu-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden xl:hidden border-t border-slate-100 bg-white px-4 pt-2 pb-4 space-y-1 shadow-lg max-h-[80vh] overflow-y-auto">
+            <button onclick="switchTab('gioi-thieu')" class="mobile-tab-btn block w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-blue-600 bg-blue-50">
+                <i class="fa-solid fa-circle-info w-6"></i>Giới thiệu
+            </button>
+            <button onclick="switchTab('trinh-bay')" class="mobile-tab-btn block w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50">
+                <i class="fa-solid fa-book-open w-6"></i>Trình bày
+            </button>
+            <button onclick="switchTab('video')" class="mobile-tab-btn block w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50">
+                <i class="fa-solid fa-play-circle w-6"></i>Video
+            </button>
+            <button onclick="switchTab('cau-hoi')" class="mobile-tab-btn block w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50">
+                <i class="fa-solid fa-lightbulb w-6"></i>Bài học
+            </button>
+            <button onclick="switchTab('cau-3')" class="mobile-tab-btn block w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50">
+                <i class="fa-solid fa-comment-dots w-6"></i>Quan điểm ấn tượng
+            </button>
+            <button onclick="switchTab('cau-4')" class="mobile-tab-btn block w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50">
+                <i class="fa-solid fa-laptop-code w-6"></i>Liên hệ sinh viên CNTT
+            </button>
+            <button onclick="switchTab('cau-5')" class="mobile-tab-btn block w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50">
+                <i class="fa-solid fa-bullhorn w-6"></i>Thông điệp
+            </button>
+            <button onclick="switchTab('thanh-vien')" class="mobile-tab-btn block w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50">
+                <i class="fa-solid fa-users w-6"></i>Thành viên
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+
+        <!-- TAB 1: GIỚI THIỆU -->
+        <section id="tab-gioi-thieu" class="tab-content active space-y-8">
+            <div class="bg-white rounded-2xl p-6 sm:p-10 border border-slate-200 shadow-sm flex flex-col md:flex-row gap-8 items-center">
+                <div class="w-full md:w-1/3 flex justify-center">
+                    <div class="relative group">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-300"></div>
+                        <img src="https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-mbm3ypwohcn876" alt="Bìa sách Tư duy phản biện" class="relative rounded-xl shadow-lg w-56 sm:w-64 object-cover border border-slate-100">
+                    </div>
+                </div>
+                <div class="w-full md:w-2/3 space-y-4">
+                    <span class="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded-full uppercase tracking-wider">Sách Rèn Luyện Và Phát Triển tư duy phản biện</span>
+                    <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 leading-tight">Tư Duy Phản Biện (Critical Thinking)</h1>
+                    <p class="text-slate-600 text-base sm:text-lg leading-relaxed">
+                        Chìa khóa mở ra góc nhìn đa chiều, giúp bạn phân tích thông tin một cách độc lập, đưa ra quyết định sáng suốt và không bị dẫn dắt bởi những ngụy biện phổ biến trong cuộc sống.
+                    </p>
+                    
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-4 border-t border-slate-100 text-sm">
+                        <div>
+                            <span class="block text-slate-400 font-medium">Tác giả</span>
+                            <span class="font-semibold text-slate-800">Albert Rutherford</span>
+                        </div>
+                        <div>
+                            <span class="block text-slate-400 font-medium">Cty phát hành</span>
+                            <span class="font-semibold text-slate-800">1980 Books</span>
+                        </div>
+                        <div>
+                            <span class="block text-slate-400 font-medium">Năm xuất bản</span>
+                            <span class="font-semibold text-slate-800">2019</span>
+                        </div>
+                        <div>
+                            <span class="block text-slate-400 font-medium">Nhà xuất bản</span>
+                            <span class="font-semibold text-slate-800">NXB Phụ Nữ Việt Nam</span>
+                        </div>
+                        <div>
+                            <span class="block text-slate-400 font-medium">Số trang</span>
+                            <span class="font-semibold text-slate-800">204</span>
+                        </div>
+                        <div>
+                            <span class="block text-slate-400 font-medium">Kích thước</span>
+                            <span class="font-semibold text-slate-800">13x19cm</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                    <div class="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center">
+                        <i class="fa-solid fa-lightbulb text-lg"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900">Tại sao cần Tư duy Phản biện?</h3>
+                    <p class="text-slate-600 leading-relaxed text-sm">
+                        Trong kỷ nguyên bùng nổ thông tin và trí tuệ nhân tạo, việc tiếp nhận dữ liệu không qua lọc chọn dễ khiến chúng ta rơi vào định kiến. Tư duy phản biện giúp bạn tĩnh lặng đánh giá, đặt câu hỏi đúng đắn và nhận diện sự thật khách quan.
+                    </p>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-3">
+                    <div class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center">
+                        <i class="fa-solid fa-bullseye text-lg"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900">Mục tiêu cuốn sách mang lại</h3>
+                    <ul class="text-slate-600 text-sm space-y-2 list-disc list-inside">
+                        <li>Phân tích tình huống sắc bén.</li>
+                        <li>Nghệ thuật đặt câu hỏi chính xác.</li>
+                        <li>Phát triển tư duy logic, sáng tạo.</li>
+                        <li>Kỹ năng phản biện và thuyết phục.</li>
+                        <li>Ra quyết định nhanh chóng, rõ ràng.</li>
+                        <li>Giải quyết vấn đề hiệu quả.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: TRÌNH BÀY -->
+        <section id="tab-trinh-bay" class="tab-content space-y-6">
+            <div class="text-center max-w-2xl mx-auto mb-8">
+                <h2 class="text-2xl font-bold text-slate-900">Tóm Tắt Nội Dung</h2>
+                <p class="text-slate-500 text-sm mt-1">Nhấn vào từng chương bên dưới để xem nội dung chi tiết.</p>
+            </div>
+
+            <div class="space-y-4 max-w-4xl mx-auto">
+                <!-- Chương 1 -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden transition-all duration-200">
+                    <button onclick="toggleSection('sec-1')" class="w-full text-left p-6 flex justify-between items-center focus:outline-none hover:bg-slate-50 transition">
+                        <div class="flex items-center space-x-4">
+                            <span class="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-bold rounded-lg shrink-0">CHƯƠNG 1</span>
+                            <h3 class="font-bold text-lg text-slate-900">SỨC MẠNH CỦA TƯ DUY PHẢN BIỆN TRONG CUỘC SỐNG</h3>
+                        </div>
+                        <i class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-300" id="icon-sec-1"></i>
+                    </button>
+                    
+                    <div id="sec-1" class="hidden px-6 pb-6 pt-2 border-t border-slate-100 space-y-4 bg-slate-50/50">
+                        <div class="space-y-2 text-xs text-slate-600 bg-white p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-slate-800 text-sm mb-1">Khái niệm và nền tảng:</h4>
+                            Tư duy phản biện là khả năng nhìn nhận mọi thứ một cách logic, kết hợp các yếu tố để hình thành đánh giá và đưa ra quyết định. 
+                            Nền tảng của nó là siêu nhận thức (suy ngẫm về quá trình tư duy).
+                        </div>
+                        <div class="space-y-2 text-xs text-slate-600 bg-white p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-slate-800 text-sm mb-1">Sự chuyển dịch giáo dục:</h4>
+                            Kể từ "Phong trào tư duy phản biện" vào thập niên 1980, giáo dục đã dịch chuyển từ việc học thuộc lòng sang khuyến khích học sinh tự khám phá, tìm mối liên hệ và ý nghĩa.
+                        </div>
+                        <div class="space-y-2 text-xs text-slate-600 bg-white p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-slate-800 text-sm mb-1">Phẩm chất của người có tư duy phản biện:</h4>
+                            Họ là những người tò mò, khách quan, tự nhận thức được định kiến của bản thân, cởi mở, tự tin vào lý lẽ và sẵn sàng thay đổi quan điểm khi có bằng chứng hợp lý.
+                        </div>
+                        <div class="space-y-2 text-xs text-slate-600 bg-white p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-slate-800 text-sm mb-1">Khoa học thần kinh và tâm lý học:</h4>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>Bộ điều khiển não bộ hoạt động qua mô hình "ba trong một" (não người, não linh trưởng, não bò sát). 
+                                    Bộ não nguyên thủy thường đẩy chúng ta đến các phản ứng cảm xúc, thiên kiến xác nhận và tìm kiếm sự đơn giản thái quá để sinh tồn.</li>
+                                <li>Con người có nhu cầu tâm lý sâu sắc về việc kiểm soát, tìm kiếm ý nghĩa và được cộng đồng công nhận, điều này dễ dẫn đến những sai sót trong tư duy.</li>
+                            </ul>
+                        </div>
+                        <div class="space-y-2 text-xs text-slate-600 bg-white p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-slate-800 text-sm mb-1">Dấu hiệu nhận biết:</h4>
+                           Một nhà tư duy phản biện giỏi thường có sự hoài nghi nhất định, sự tò mò tự nhiên và sự khiêm tốn.
+                        </div>
+                        <div class="bg-blue-50 p-3 rounded-xl border border-blue-100 text-xs text-blue-800">
+                            <strong>Chìa khóa:</strong> "Sự tự nhận thức và tò mò"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chương 2 -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden transition-all duration-200">
+                    <button onclick="toggleSection('sec-2')" class="w-full text-left p-6 flex justify-between items-center focus:outline-none hover:bg-slate-50 transition">
+                        <div class="flex items-center space-x-4">
+                            <span class="px-3 py-1 bg-indigo-100 text-indigo-700 text-xs font-bold rounded-lg shrink-0">CHƯƠNG 2</span>
+                            <h3 class="font-bold text-lg text-slate-900">NỀN TẢNG CỦA TƯ DUY PHẢN BIỆN</h3>
+                        </div>
+                        <i class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-300" id="icon-sec-2"></i>
+                    </button>
+                    
+                    <div id="sec-2" class="hidden px-6 pb-6 pt-2 border-t border-slate-100 space-y-4 bg-slate-50/50">
+                        <div class="space-y-2 text-xs text-slate-600 bg-white p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-slate-800 text-sm mb-1">Ba cấp độ tiếp nhận thông tin:</h4>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>Không phản biện: Chấp nhận thông tin theo giá trị bề mặt, dựa vào cảm xúc mà không đặt câu hỏi.</li>
+                                <li>Phản biện yếu: Nhận ra một số điểm chưa chính xác nhưng vẫn dễ dàng chấp nhận các giả định hoặc quan niệm chính được đưa ra.</li>
+                                <li>Phản biện mạnh mẽ: Phân tách và kiểm tra thông tin từ mọi góc độ, điều tra căn cứ, nguồn gốc, giả định và thiên kiến một cách khách quan.</li>
+                            </ul>
+                        </div>
+                        <div class="space-y-2 text-xs text-slate-600 bg-white p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-slate-800 text-sm mb-1">7 bước để cải thiện tư duy phản biện (theo Carole Wade và Carol Tavris):</h4>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>Đặt câu hỏi cho hầu hết mọi vấn đề.</li>
+                                <li>Trình bày và kiểm tra lại câu hỏi của chính mình.</li>
+                                <li>Kiểm tra bằng chứng và nhận diện thiên kiến.</li>
+                                <li>Tránh để tư duy cảm tính kìm hãm.</li>
+                                <li>Tránh khái quát hóa quá mức.</li>
+                                <li>Tiếp tục suy nghĩ, mở rộng nhiều góc độ.</li>
+                                <li>Chấp nhận sự không chắc chắn khi chưa có đủ dữ liệu.</li>
+                            </ul>
+                        </div>
+                        <div class="space-y-2 text-xs text-slate-600 bg-white p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-slate-800 text-sm mb-1">Tiêu chuẩn trí tuệ phổ quát và các yếu tố của tư duy:</h4>
+                                Đưa ra các tiêu chuẩn (rõ ràng, chính xác, tỉ mỉ, liên quan, sâu sắc, rộng mở, logic, ý nghĩa, công bằng) 
+                                áp dụng lên 8 yếu tố tư duy (mục đích, câu hỏi, giả định, quan điểm, thông tin, suy luận, quan niệm, ẩn ý - hệ quả).
+                        </div>
+                        <div class="space-y-2 text-xs text-slate-600 bg-white p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-slate-800 text-sm mb-1">Đặc điểm trí tuệ có giá trị:</h4>
+                                Gồm sự khiêm tốn, can đảm, đồng empathy, quyền tự chủ, chính trực, kiên trì về mặt trí tuệ, niềm tin vào lý trí và tư duy công bằng.
+                        </div>
+                        <div class="bg-indigo-50 p-3 rounded-xl border border-indigo-100 text-xs text-indigo-800">
+                            <strong>Chìa khóa:</strong> "Phản biện mạnh mẽ và tiêu chuẩn trí tuệ"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chương 3 -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden transition-all duration-200">
+                    <button onclick="toggleSection('sec-3')" class="w-full text-left p-6 flex justify-between items-center focus:outline-none hover:bg-slate-50 transition">
+                        <div class="flex items-center space-x-4">
+                            <span class="px-3 py-1 bg-amber-100 text-amber-700 text-xs font-bold rounded-lg shrink-0">CHƯƠNG 3</span>
+                            <h3 class="font-bold text-lg text-slate-900">CẠM BÃY TRONG TƯ DUY</h3>
+                        </div>
+                        <i class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-300" id="icon-sec-3"></i>
+                    </button>
+                    
+                    <div id="sec-3" class="hidden px-6 pb-6 pt-2 border-t border-slate-100 space-y-4 bg-slate-50/50">
+                        <div class="space-y-2 text-xs text-slate-600 bg-white p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-slate-800 text-sm mb-1">Ký ức và ngộ nhận:</h4>
+                            Ký ức con người không phải là máy quay phim mà do não bộ tự xây dựng lại, dễ bị bóp méo bởi niềm tin và thiên kiến. 
+                            Trí nhớ ngắn hạn có giới hạn, trong khi hiện tượng mất trí nhớ nguồn và mất trí nhớ sự thật khiến chúng ta dễ tin vào thông tin sai lệch.
+                        </div>
+                        <div class="space-y-2 text-xs text-slate-600 bg-white p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-slate-800 text-sm mb-1">Khoa học về thiên kiến:</h4>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>Phân biệt giữa Hệ thống 1 (Tư duy nhanh): tự động, cảm xúc, trực giác và Hệ thống 2 (Tư duy chậm): suy luận có chủ đích, logic nhưng tốn năng lượng.</li>
+                                <li>Các sai lệch phổ biến: quy luật số lượng, ảo tưởng hiểu biết, quá lạc quan, quá tự tin và lo sợ tổn hại.</li>
+                            </ul>
+                        </div>
+                        <div class="space-y-2 text-xs text-slate-600 bg-white p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-slate-800 text-sm mb-1">Các loại thiên kiến:</h4>
+                            Thiên kiến niềm tin, thiên kiến xác nhận, thiên kiến nhận thức muộn và thiên kiến vị kỷ.
+                        </div>
+                        <div class="space-y-2 text-xs text-slate-600 bg-white p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-slate-800 text-sm mb-1">Các loại ngụy biện logic:</h4>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>Ngụy biện "người có thẩm quyền luôn đúng".</li>
+                                <li>Ngụy biện nhân quả, ngụy biện phi thể thức, ngụy biện tấn công cá nhân, ngụy biện bất khả tri.</li>
+                                <li>Ngụy biện nhị nguyên luận, đổi mục tiêu (di chuyển mục tiêu), và ngụy biện người rơm.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-amber-50 p-3 rounded-xl border border-amber-100 text-xs text-amber-800">
+                            <strong>Chìa khóa:</strong> "Nhận diện thiên kiến và ngụy biện"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chương 4 -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden transition-all duration-200">
+                    <button onclick="toggleSection('sec-4')" class="w-full text-left p-6 flex justify-between items-center focus:outline-none hover:bg-slate-50 transition">
+                        <div class="flex items-center space-x-4">
+                            <span class="px-3 py-1 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-lg shrink-0">CHƯƠNG 4</span>
+                            <h3 class="font-bold text-lg text-slate-900">TƯ DUY PHẢN BIỆN VÀ TRUYỀN THÔNG THAO TÚNG</h3>
+                        </div>
+                        <i class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-300" id="icon-sec-4"></i>
+                    </button>
+                    
+                    <div id="sec-4" class="hidden px-6 pb-6 pt-2 border-t border-slate-100 space-y-4 bg-slate-50/50">
+                        <div class="space-y-2 text-xs text-slate-600 bg-white p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-slate-800 text-sm mb-1">Tâm lý bầy đàn:</h4>
+                            Xu hướng cá nhân bị ảnh hưởng bởi đám đông, hành xử theo cảm xúc thay vì tư duy hợp lý (ví dụ: các chiến dịch mua sắm cuồng nhiệt như Black Friday).
+                        </div>
+                        <div class="space-y-2 text-xs text-slate-600 bg-white p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-slate-800 text-sm mb-1">Thủ thuật tiếp thị và thao túng:</h4>
+                            Các nhà quảng cáo lợi dụng tâm lý con người qua các chiến thuật: đi cùng đám đông (hiệu ứng đoàn tàu), sống theo tiêu chuẩn thành công cao, sử dụng chuyên gia giả định, xu nịnh, 
+                            tạo cảm giác yêu thương, lạm dụng bằng chứng khoa học và đưa ra giải pháp đơn giản.
+                        </div>
+                        <div class="space-y-2 text-xs text-slate-600 bg-white p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-slate-800 text-sm mb-1">Thuyết âm mưu:</h4>
+                            Khám phá lý do tại sao con người thích thuyết âm mưu (đáp ứng nhu cầu kiểm soát, tìm kiếm sự rõ ràng trong thế giới phức tạp và giải thích những khoảng trống kiến thức). 
+                            Chương nhấn mạnh việc cần dùng sự hoài nghi lành mạnh và tư duy logic để lọc bỏ các thông tin vô căn cứ này.
+                        </div>
+                        <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-100 text-xs text-emerald-800">
+                            <strong>Chìa khóa:</strong> "Vượt qua tâm lý bầy đàn và chiêu trò thao túng"
+                        </div>
+                    </div>
+                </div>
+
+                <!--CHƯƠNG 5-->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden transition-all duration-200">
+                    <button onclick="toggleSection('sec-5')" class="w-full text-left p-6 flex justify-between items-center focus:outline-none hover:bg-slate-50 transition">
+                        <div class="flex items-center space-x-4">
+                            <span class="px-3 py-1 bg-purple-100 text-purple-700 text-xs font-bold rounded-lg shrink-0">CHƯƠNG 5</span>
+                            <h3 class="font-bold text-lg text-slate-900">HÌNH THÀNH TƯ DUY PHẢN BIỆN</h3>
+                        </div>
+                        <i class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-300" id="icon-sec-5"></i>
+                    </button>
+                    
+                    <div id="sec-5" class="hidden px-6 pb-6 pt-2 border-t border-slate-100 space-y-4 bg-slate-50/50">
+                        <div class="space-y-2 text-xs text-slate-600 bg-white p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-slate-800 text-sm mb-1">Quy trình 4 bước tự học:</h4>
+                            Sẵn sàng học -> Đặt mục tiêu học tập -> Tham gia vào quá trình học tập -> Đánh giá việc học tập. 
+                        </div>
+                        <div class="space-y-2 text-xs text-slate-600 bg-white p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-slate-800 text-sm mb-1">Đánh thức sự tò mò:</h4>
+                            Khôi phục sự tò mò tự nhiên như trẻ em ở người lớn bằng cách mở rộng lĩnh vực kiến thức, trải nghiệm mới, đi du lịch và đặt câu hỏi không ngừng.
+                        </div>
+                        <div class="space-y-2 text-xs text-slate-600 bg-white p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-slate-800 text-sm mb-1">Thang tư duy Bloom:</h4>
+                            Công cụ phân loại quá trình nhận thức gồm 6 cấp độ: Biết (Knowledge) -> Hiểu (Comprehension) -> Vận dụng (Application) 
+                            -> Phân tích (Analysis) -> Đánh giá (Evaluation) -> Sáng tạo/Tổng hợp (Creation/Synthesis).
+                        </div>
+                        <div class="space-y-2 text-xs text-slate-600 bg-white p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-slate-800 text-sm mb-1">Đặt câu hỏi tư duy sâu và phương pháp lập luận:</h4>
+                            Sử dụng câu hỏi mở, phương pháp diễn dịch, quy nạp, xem xét đa chiều để tránh bị thao túng.
+                        </div>
+                        <div class="space-y-2 text-xs text-slate-600 bg-white p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-slate-800 text-sm mb-1">5 câu hỏi cốt lõi để tránh bị thao túng:</h4>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>Vấn đề trước mắt và kết luận là gì?</li>
+                                <li>Lý do là gì?</li>
+                                <li>Giả định là gì?</li>
+                                <li>Có ngụy biện trong lập luận không?</li>
+                                <li>Bằng chứng đó đáng tin cậy như thế nào?</li>
+                            </ul>
+                        </div>
+                        <div class="space-y-2 text-xs text-slate-600 bg-white p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-slate-800 text-sm mb-1">Sức mạnh của ngôn từ và phép loại suy:</h4>
+                            Ngôn từ rất phức tạp và mang nhiều tầng nghĩa tùy ngữ cảnh. Phép loại suy giúp kết nối các khái niệm khác nhau để khơi gợi sự sáng tạo và lập luận, 
+                            nhưng cũng cần cẩn trọng trước các phép loại suy sai lệch dùng để thao túng.  
+                        </div>
+                        <div class="bg-purple-50 p-3 rounded-xl border border-purple-100 text-xs text-purple-800">
+                            <strong>Chìa khóa:</strong> "Rèn luyện qua 5 câu hỏi vàng và Thang tư duy Bloom"
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: VIDEO -->
+        <section id="tab-video" class="tab-content space-y-6">
+            <div class="text-center max-w-2xl mx-auto mb-8">
+                <h2 class="text-2xl font-bold text-slate-900">Video Bài Giảng & Tóm Tắt</h2>
+                <p class="text-slate-500 text-sm mt-1">Cung cấp góc nhìn trực quan thông qua các video phân tích về tư duy phản biện.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
+                    <div class="relative aspect-video bg-slate-900">
+                        <iframe class="w-full h-full" src="https://www.youtube.com/embed/dItUGF8XHyw" title="Tư duy phản biện là gì?" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-bold text-slate-900 text-lg mb-2">Tư duy phản biện là gì? Phương pháp rèn luyện</h3>
+                        <p class="text-slate-600 text-sm">
+                            Video giải thích ngắn gọn bản chất của tư duy phản biện và những bước đơn giản để rèn luyện thói quen suy nghĩ tích cực mỗi ngày.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
+                    <div class="relative aspect-video bg-slate-900">
+                        <iframe class="w-full h-full" src="https://www.youtube.com/embed/5D3x5a9i1p8" title="5 Mẹo cải thiện tư duy phản biện" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-bold text-slate-900 text-lg mb-2">5 Bước nâng cao năng lực tư duy (TED-Ed)</h3>
+                        <p class="text-slate-600 text-sm">
+                            Hướng dẫn 5 bước cốt lõi để phân tích bài toán, đặt câu hỏi đúng đắn và đưa ra lựa chọn sáng suốt hơn trong cuộc sống.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB: NỘI DUNG BÀI HỌC -->
+        <section id="tab-cau-hoi" class="tab-content space-y-6">
+            <div class="text-center max-w-2xl mx-auto mb-8">
+                <h2 class="text-2xl font-bold text-slate-900">Kiến Thức Trọng Tâm</h2>
+                <p class="text-slate-500 text-sm mt-1">3 chủ đề cốt lõi giúp hình thành và duy trì năng lực tư duy phản biện.</p>
+            </div>
+
+            <div class="space-y-6 max-w-4xl mx-auto">
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm hover:border-blue-300 transition">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center shrink-0 font-bold text-xl">01</div>
+                        <div class="space-y-2">
+                            <h3 class="font-bold text-slate-900 text-xl">Tư duy phản biện không phải là phản bác, mà là tìm kiếm sự thật</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed">
+                                Mục tiêu cốt lõi của tư duy phản biện là đánh giá thông tin dựa trên bằng chứng, logic và nhiều góc nhìn để đi đến kết luận chính xác nhất, tránh việc chỉ trích cảm tính.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm hover:border-indigo-300 transition">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center shrink-0 font-bold text-xl">02</div>
+                        <div class="space-y-2">
+                            <h3 class="font-bold text-slate-900 text-xl">Con người rất dễ bị thiên kiến chi phối</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed">
+                                Bộ não thường thích "đường tắt tư duy" nên chúng ta dễ mắc thiên kiến xác nhận, quá tự tin hoặc tin vào điều quen thuộc. Nhận diện các thiên kiến này là bước đầu để tư duy tốt hơn.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm hover:border-emerald-300 transition">
+                    <div class="flex items-start space-x-4">
+                        <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center shrink-0 font-bold text-xl">03</div>
+                        <div class="space-y-2">
+                            <h3 class="font-bold text-slate-900 text-xl">Đặt câu hỏi là kỹ năng cốt lõi của tư duy phản biện</h3>
+                            <p class="text-slate-600 text-sm leading-relaxed">
+                                Người có tư duy phản biện luôn hỏi: "Bằng chứng ở đâu?", "Có cách giải thích nào khác không?" hay "Ai được lợi từ thông tin này?" để không bị thao túng bởi cảm xúc.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB MỚI: CÂU 3 - CÂU CHUYỆN / QUAN ĐIỂM ẤN TƯỢNG -->
+        <section id="tab-cau-3" class="tab-content space-y-6">
+            <div class="text-center max-w-2xl mx-auto mb-8">
+                <span class="px-3 py-1 bg-amber-100 text-amber-800 text-xs font-semibold rounded-full uppercase tracking-wider">Thảo Luận Nhóm</span>
+                <h2 class="text-2xl font-bold text-slate-900 mt-2">Câu chuyện, ví dụ hoặc quan điểm nào khiến nhóm ấn tượng? Vì sao?</h2>
+            </div>
+
+            <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm max-w-4xl mx-auto space-y-6">
+                <div class="border-l-4 border-amber-500 pl-4 py-2 bg-amber-50/50 rounded-r-xl">
+                    <h3 class="font-bold text-slate-900 text-lg mb-1">Điểm ấn tượng nhất đối với nhóm:</h3>
+                    <p class="text-slate-700 text-sm leading-relaxed">
+                        Quan điểm về <strong>Hệ thống 1 (Tư duy nhanh) và Hệ thống 2 (Tư duy chậm)</strong> trong chương 3. Cuốn sách chỉ ra rằng bộ não con người luôn ưu tiên dùng "tư duy nhanh" (trực giác, cảm xúc) để tiết kiệm năng lượng, điều này lý giải vì sao con người rất dễ rơi vào bẫy ngụy biện hoặc tin vào thông tin giả mạo trên mạng xã hội mà không kiểm chứng.
+                    </p>
+                </div>
+
+                <div class="space-y-3">
+                    <h4 class="font-bold text-slate-800 text-base">Vì sao nhóm lại ấn tượng với quan điểm này?</h4>
+                    <ul class="space-y-3 text-slate-600 text-sm list-disc list-inside">
+                        <li><strong>Gắn liền với thực tế đời sống:</strong> Nó giải thích chính xác hiện tượng tâm lý bầy đàn, việc chúng ta vội vàng tin hoặc mua hàng theo các chiêu trò marketing đánh vào cảm xúc.</li>
+                        <li><strong>Cung cấp góc nhìn khoa học:</strong> Giúp nhóm hiểu rằng mắc sai lầm không phải vì thiếu thông minh, mà do cơ chế sinh học của não bộ. Từ đó, mỗi người cần chủ động kích hoạt "Hệ thống 2" (suy luận chậm, logic) trước khi đưa ra quyết định quan trọng.</li>
+                        <li><strong>Thay đổi cách nhìn nhận thông tin:</strong> Giúp nhóm hình thành thói quen dừng lại vài giây để đặt câu hỏi thay vì phản ứng ngay lập tức theo cảm xúc ban đầu.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB MỚI: CÂU 4 - LIÊN HỆ BẢN THÂN (CHO SINH VIÊN CNTT) -->
+        <section id="tab-cau-4" class="tab-content space-y-6">
+            <div class="text-center max-w-2xl mx-auto mb-8">
+                <span class="px-3 py-1 bg-indigo-100 text-indigo-800 text-xs font-semibold rounded-full uppercase tracking-wider">Ứng Dụng Nghề Nghiệp</span>
+                <h2 class="text-2xl font-bold text-slate-900 mt-2">Điều gì trong sách có thể áp dụng cho học tập, cuộc sống hoặc nghề nghiệp của sinh viên CNTT?</h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-3">
+                    <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-lg">Trong Lập Trình & Gỡ Lỗi (Debugging)</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Lập trình viên thường gặp lỗi (bugs) và dễ vướng vào thiên kiến xác nhận (cho rằng code mình viết đã đúng). Tư duy phản biện giúp sinh viên CNTT gác lại cảm xúc chủ quan, bóc tách vấn đề từng bước theo logic, đọc kỹ log lỗi và kiểm chứng giả định một cách khách quan thay vì đoán mò.
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-3">
+                    <div class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-laptop-code"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-lg">Trong Thiết Kế Hệ Thống & Thuật Toán</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Khi thiết kế CSDL hoặc giải thuật, việc áp dụng <em>Thang tư duy Bloom</em> (từ hiểu, phân tích đến đánh giá và sáng tạo) giúp sinh viên không chỉ sao chép code mà hiểu sâu bản chất, dự đoán các ngoại lệ (edge cases) và tối ưu hóa hiệu năng hệ thống.
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-3">
+                    <div class="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 text-lg">Trong Kỷ Nguyên AI & An Toàn Thông Tin</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        Công nghệ AI và mạng xã hội bùng nổ mang theo nhiều thông tin sai lệch và mã độc tinh vi. Kỹ năng đặt 5 câu hỏi vàng giúp sinh viên CNTT nâng cao cảnh giác, bảo mật thông tin cá nhân và không bị dắt mũi bởi các tin giả trên không gian mạng.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB MỚI: CÂU 5 - THÔNG ĐIỆP CHO CẢ LỚP -->
+        <section id="tab-cau-5" class="tab-content space-y-6">
+            <div class="text-center max-w-2xl mx-auto mb-8">
+                <span class="px-3 py-1 bg-purple-100 text-purple-800 text-xs font-semibold rounded-full uppercase tracking-wider">Thông Điệp Cốt Lõi</span>
+                <h2 class="text-2xl font-bold text-slate-900 mt-2">Nếu chỉ được chia sẻ MỘT điều từ cuốn sách cho cả lớp, nhóm sẽ chọn điều gì? Vì sao?</h2>
+            </div>
+
+            <div class="bg-gradient-to-br from-blue-900 to-indigo-900 rounded-2xl p-8 sm:p-10 text-white shadow-lg max-w-4xl mx-auto space-y-6">
+                <div class="flex items-center space-x-3 text-blue-300 text-sm font-semibold uppercase tracking-wider">
+                    <i class="fa-solid fa-quote-left text-2xl"></i>
+                    <span>Thông điệp tâm đắc nhất</span>
+                </div>
+                
+                <h3 class="text-2xl sm:text-3xl font-extrabold text-white leading-tight">
+                    "Đừng vội tin ngay những gì bạn nghĩ hay những gì người khác áp đặt — hãy luôn dừng lại, đặt câu hỏi và tìm kiếm bằng chứng khách quan."
+                </h3>
+
+                <div class="pt-4 border-t border-blue-800/60 space-y-3 text-blue-100 text-sm leading-relaxed">
+                    <h4 class="font-bold text-white text-base">Vì sao nhóm chọn điều này để chia sẻ với cả lớp?</h4>
+                    <p>
+                        Trong cuộc sống hiện đại ngập tràn thông tin, mạng xã hội và trí tuệ nhân tạo, thói quen tiếp nhận thông tin thụ động (không phản biện) rất dễ biến chúng ta thành công cụ cho sự thao túng hoặc tin giả. 
+                    </p>
+                    <p>
+                        Thông điệp này không nhằm mục đích biến chúng ta thành những kẻ đa nghi hay hay bắt bẻ người khác, mà nhằm xây dựng <strong>sự khiêm tốn trí tuệ và tinh thần tò mò chân chính</strong>. Khi biết đặt câu hỏi đúng, chúng ta làm chủ được quyết định của bản thân, thấu hiểu người khác sâu sắc hơn và không ngừng phát triển trong học tập cũng như nghề nghiệp sau này.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB: THÀNH VIÊN -->
+        <section id="tab-thanh-vien" class="tab-content space-y-6">
+            <div class="text-center max-w-2xl mx-auto mb-8">
+                <h2 class="text-2xl font-bold text-slate-900">Nhóm Thực Hiện Dự Án</h2>
+                <p class="text-slate-500 text-sm mt-1">Các thành viên xây dựng nội dung và thiết kế trang web này.</p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-center space-y-3">
+                    <img src="https://s160-26-ava-talk.zadn.vn/6/29fdd0627fafa82cd7a76a1b17196225.jpg?key=fdjQXoE8057hxGSGJUizpQ&time=1799214974" alt="Avatar" class="w-20 h-20 rounded-full mx-auto object-cover border-2 border-blue-500">
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-lg">Võ Duy Thiên</h3>
+                        <p class="text-blue-600 text-xs font-semibold uppercase">Trưởng Nhóm</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-center space-y-3">
+                    <img src="https://s160-26-ava-talk.zadn.vn/2/2b2b4b4a70e37f4f8c969413f81aac8c.jpg?key=UnqEbRcSqDy_Rx1mnI_6DQ&time=1797480440" alt="Avatar" class="w-20 h-20 rounded-full mx-auto object-cover border-2 border-indigo-500">
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-lg">Huỳnh Trung Tín</h3>
+                        <p class="text-indigo-600 text-xs font-semibold uppercase">Nội dung</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-center space-y-3 sm:col-span-2 lg:col-span-1">
+                    <img src="https://s160-26-ava-talk.zadn.vn/10/0eb34442cc05a51eecca172f5c969f4a.jpg?key=D-YRtxj9qSx63Zhg31qCHQ&time=1795308336" alt="Avatar" class="w-20 h-20 rounded-full mx-auto object-cover border-2 border-emerald-500">
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-lg">Huỳnh Quốc Vỹ</h3>
+                        <p class="text-emerald-600 text-xs font-semibold uppercase">Biên Tập Video & Bài Học</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-center space-y-3 sm:col-span-2 lg:col-span-1">
+                    <img src="https://s160-26-ava-talk.zadn.vn/2/2b2b4b4a70e37f4f8c969413f81aac8c.jpg?key=UnqEbRcSqDy_Rx1mnI_6DQ&time=1797480440" alt="Avatar" class="w-20 h-20 rounded-full mx-auto object-cover border-2 border-emerald-500">
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-lg">Nguyễn Văn Thương</h3>
+                        <p class="text-emerald-600 text-xs font-semibold uppercase">Hỗ trợ</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-center space-y-3 sm:col-span-2 lg:col-span-1">
+                    <img src="https://s160-26-ava-talk.zadn.vn/37/b957f94b57afa64781a84b8f7b2829ba.jpg?key=uO3SlbJkk97UticniuTBtQ&time=1798936142" alt="Avatar" class="w-20 h-20 rounded-full mx-auto object-cover border-2 border-emerald-500">
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-lg">Huỳnh Trung Tín</h3>
+                        <p class="text-emerald-600 text-xs font-semibold uppercase">Thiết kế</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-6 mt-12">
+        <div class="max-w-6xl mx-auto px-4 text-center text-slate-500 text-sm">
+            <p>© 2026 Trang web Sách Tư Duy Phản Biện. Được thiết kế tối giản & hiện đại.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript logic -->
+    <script>
+        // Switch Tabs Logic
+        function switchTab(tabId) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            const navButtons = document.querySelectorAll('.tab-btn');
+            navButtons.forEach(btn => {
+                btn.classList.remove('text-blue-600', 'bg-blue-50');
+                btn.classList.add('text-slate-600');
+            });
+
+            const targetContent = document.getElementById(`tab-${tabId}`);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+
+            const targetNav = document.getElementById(`nav-${tabId}`);
+            if (targetNav) {
+                targetNav.classList.remove('text-slate-600');
+                targetNav.classList.add('text-blue-600', 'bg-blue-50');
+            }
+
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (!mobileMenu.classList.contains('hidden')) {
+                toggleMobileMenu();
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Toggle Mobile Menu
+        // Toggle Mobile Menu (Tự động ẩn/hiện menu khi bấm vào icon 3 gạch trên điện thoại)
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            menu.classList.toggle('hidden');
+            
+            if (menu.classList.contains('hidden')) {
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+            } else {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-xmark');
+            }
+        }
+
+        // Toggle Section Visibility (Trình bày Tab - Bấm vào phần nào mở phần đó)
+        function toggleSection(secId) {
+            const secBlock = document.getElementById(secId);
+            const icon = document.getElementById(`icon-${secId}`);
+            
+            const isCurrentlyHidden = secBlock.classList.contains('hidden');
+
+            // Ẩn tất cả các section khác trước khi mở section mới
+            ['sec-1', 'sec-2', 'sec-3', 'sec-4', 'sec-5'].forEach(id => {
+                const block = document.getElementById(id);
+                const ic = document.getElementById(`icon-${id}`);
+                if (block) block.classList.add('hidden');
+                if (ic) ic.classList.remove('rotate-180');
+            });
+
+            // Nếu phần bấm vào đang ẩn thì mở ra
+            if (isCurrentlyHidden) {
+                secBlock.classList.remove('hidden');
+                if (icon) icon.classList.add('rotate-180');
+            }
+        }
+    </script>
+</body>
+</html>
